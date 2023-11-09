@@ -1,5 +1,5 @@
 
-import { useDate } from  '../components/Digits'
+import { useDate } from  '../Funcs/Digits'
 const ShowTime = () => {
 
   const { date } = useDate()

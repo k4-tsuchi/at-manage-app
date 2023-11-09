@@ -26,6 +26,16 @@ export const day = () => {
   return date[1] + "月" + date[2] + "日(" + date[3] + ")"
 }
 
+export const dateDay = () => {
+  const date = digits()
+  return date[2]
+}
+
+export const minutes = () => {
+  const date = digits()
+  return date[4] + ':' + date[5]
+}
+
 export const time = () => {
   const date = digits()
   return date[4] + ':' + date[5] + ':' + date[6]

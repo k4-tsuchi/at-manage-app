@@ -1,35 +1,25 @@
 
 import { useEffect, useState } from "react"
-import { useAtomValue } from "jotai"
+import { useAtomValue, useSetAtom } from "jotai"
 
 import Header from "./Header"
 import Timer from "./Timer"
 import History from "./History"
 import Nav from "./Nav"
-import { getModeAtom } from "../Atom/atoms"
+import { getDataAtom, getModeAtom } from "../Atom/atoms"
+import { getFetch, sendFetchAtom } from "../Atom/fetchAtom"
 
 
 function View() {
 
   const mode = useAtomValue(getModeAtom)
-  console.log(mode)
-  // const [ dom, setDom ] = useState<JSX.Element>()
+  useAtomValue(sendFetchAtom)
+  // useAtomValue(getFetchAtom)
+  // const setGetData = useSetAtom(getDataAtom)
 
-  // useEffect(() => {
-  //   console.log(mode)
-  //   switch(mode) {
-  //     case 'timer':
-  //       setDom(
-  //           <Timer />
-  //       )
-  //       break
-
-  //     case 'assignment':
-  //         setDom(
-  //           <History />
-  //         )
-  //   }
-  // }, [mode])
+  useEffect(() => {
+    getFetch()
+  }, [])
 
   return (
     <>
