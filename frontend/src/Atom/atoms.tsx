@@ -19,3 +19,4 @@ export const modalResultAtom = atom<boolean | undefined>(undefined)
 
 export const getDataAtom = atom<boolean | undefined>(undefined)
 
+export const CurrentReportId = atom<String>("")

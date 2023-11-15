@@ -1,7 +1,8 @@
-import {atom} from 'jotai'
-import { getDataAtom, globalStateAtom } from './atoms'
+import { atom } from 'jotai'
+import { CurrentReportId, getDataAtom, globalStateAtom} from './atoms'
 import { dateDay, day, minutes, time } from '../Funcs/Digits'
 
+import { loadable } from "jotai/utils"
 
 type Create = {
   day: String;
@@ -16,7 +17,7 @@ type End = {
   end_at: String
 }
 
-const url = 'https://localhost:8000/reports';
+const url = 'https://localhost:8000/reports/';
 
 export async function getFetch() {
   const res = await fetch(url)
@@ -24,42 +25,42 @@ export async function getFetch() {
   console.log(json)
 }
 
-export const sendFetchAtom = atom((get) => {
-  switch (get(globalStateAtom)) {
-    case 'at_in': 
-      const content: Create = {
-        day: dateDay(),
-        start_at: minutes()
-      }
-      return sendFetch(content, "POST")
-    case 'at_out':
-      console.log('fetch_at_out')
-      break
-    case "rest_in":
-      console.log('fetch_rest_in')
-      break
-    case "rest_out":
-      console.log('fetch_rest_out')
-      break
-  }
-})
+const sendFetchAtom = atom(
+  async (get) => {
+    console.log(get(globalStateAtom))
+    switch (get(globalStateAtom)) {
+      case 'at_in':
+        return await sendReportFetch(
+          {
+            day: dateDay(),
+            start_at: minutes()
+          }, 
+          "POST")
+      case 'at_out':
+        console.log(CurrentReportId)
+        return await sendReportFetch(
+          {end_at: minutes()},
+          "DELETE",
+          get(CurrentReportId)
+        )
+      case "rest_in":
+        return await sendReportFetch(
+          {time: minutes()},
+          "POST",
+          get(CurrentReportId) + "/rest" 
+        )
+      case "rest_out":
+        return await sendReportFetch(
+          {time: minutes()},
+          "DELETE",
+          get(CurrentReportId) + "/rest" 
+        )
+    }
+  })
 
-// async function createReportFetch() {
-//   const res = await fetch(url, {
-//     method: 'POST',
-//     headers: {
-//       "Content-Type": "application/json"
-//     },
-//     body: JSON.stringify({
-//       day: dateDay(),
-//       start_at: minutes()
-//     })
-//   })
-//   const json = res.json()
-//   console.log(json)
-// }
+export const sendLoadableAtom = loadable(sendFetchAtom)
 
-async function sendFetch(content: Create | Rest | End, method: string, params: string = "") {
+async function sendReportFetch(content: Create | Rest | End, method: string, params: String = "") {
   const res = await fetch(url + params, {
     method: method,
     headers: {
@@ -67,10 +68,6 @@ async function sendFetch(content: Create | Rest | End, method: string, params: s
     },
     body: JSON.stringify(content)
   })
-  const json = res.json()
-  json.then((value) => {
-    return value;
-  }
-  )
+  return await res.json()
 }
 
