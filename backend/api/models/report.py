@@ -9,6 +9,7 @@ class Report(Base):
 
   id = Column(Integer, primary_key=True)
   # name = Column(String(1024))
+  month = Column(String(1024))
   day = Column(String(1024))
   start_at = Column(String(1024))
   rest_span = Column(String(1024))

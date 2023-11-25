@@ -1,9 +1,9 @@
 
-import { useAtom } from "jotai"
-import { modalResultAtom } from "../Atom/atoms"
+import { useSetAtom } from "jotai"
+import { actionModalResultAtom } from "../Atom/atoms"
 
 const Confirm: React.FC = () => {
-  const [ , setResult] = useAtom(modalResultAtom)
+  const setResult = useSetAtom(actionModalResultAtom)
 
   return (
     <>

@@ -17,3 +17,17 @@ export interface Date {
   day: string;
   time: string
 }
+
+export type Create = {
+  month: String,
+  day: String;
+  start_at: String;
+}
+
+export type Rest = {
+  time: String;
+}
+
+export type End = {
+  end_at: String
+}

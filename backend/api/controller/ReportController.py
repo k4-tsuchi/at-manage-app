@@ -16,6 +16,7 @@ async def create(
     request: report_schema.ReportCreate
 ) -> report_model.Report:
   report = report_model.Report(
+    month=request.month,
     day=request.day,
     start_at=request.start_at,
   )
@@ -29,12 +30,32 @@ async def get_all(db: AsyncSession) -> List[Tuple[int, str, bool]]:
     db.execute(
         select(
           report_model.Report.id,
+          report_model.Report.month,
           report_model.Report.day,
           report_model.Report.start_at,
           report_model.Report.rest_span,
           report_model.Report.end_at,
           report_model.Report.active_span
       )
+    )
+  )
+  return result.all()
+
+async def get_month(
+    db: AsyncSession,
+    date_month: str
+    ) -> List[Tuple[int, str, bool]]:
+  result: Result = await (
+    db.execute(
+      select(
+          report_model.Report.id,
+          report_model.Report.month,
+          report_model.Report.day,
+          report_model.Report.start_at,
+          report_model.Report.rest_span,
+          report_model.Report.end_at,
+          report_model.Report.active_span
+      ).filter(report_model.Report.month == date_month)
     )
   )
   return result.all()

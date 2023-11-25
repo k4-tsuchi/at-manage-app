@@ -3,28 +3,23 @@ import { useEffect, useState } from "react"
 import { useAtom, useAtomValue, useSetAtom } from "jotai"
 
 import Header from "./Header"
-import Timer from "./Timer"
-import History from "./History"
 import Nav from "./Nav"
-import { CurrentReportId, getModeAtom } from "../Atom/atoms"
+import { getModeAtom } from "../Atom/atoms"
 import { getFetch } from "../Atom/fetchAtom"
-import { reportTargetIdAtom } from "../Atom/responseAtom"
+import { sendFetchResponseAtom } from "../Atom/responseAtom"
 
 
 function View() {
 
   const mode = useAtomValue(getModeAtom)
 
-  useEffect(() => {
-    getFetch()
-  }, [])
-
-  const report_id = useAtomValue(reportTargetIdAtom)
-  const setReportId = useSetAtom(CurrentReportId)
+  const [fetchResponse, setFetchResponse] = useAtom(sendFetchResponseAtom)
 
   useEffect(() => {
-    setReportId(report_id)
-  }, [report_id])
+    if (fetchResponse) {
+      setFetchResponse(fetchResponse)
+    }
+  }, [fetchResponse])
 
   return (
     <>

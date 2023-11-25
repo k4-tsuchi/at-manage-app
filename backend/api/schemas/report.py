@@ -8,6 +8,7 @@ class ReportBase(BaseModel):
   pass
 
 class ReportCreate(ReportBase):
+  month: Optional[str] = Field(None, example='-') 
   day: Optional[str] = Field(None, example='-') 
   start_at: Optional[str] = Field(None, example='-')
 
@@ -22,6 +23,7 @@ class ReportClose(ReportBase):
 
 class ReportResponse(ReportClose):
   id: int = Field(0, description="レポートID")
+  day: Optional[str] = Field(None, example='-') 
   start_at: Optional[str] = Field(None, example='-')
   rest_span: Optional[str] = Field(None, example='-')
   active_span: Optional[str] = Field(None, example='-')

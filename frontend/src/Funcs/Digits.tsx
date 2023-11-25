@@ -1,5 +1,4 @@
 
-import { atom, useAtom } from "jotai";
 import { useEffect, useState } from "react";
 // import { Date } from "../@types/typeList.d";
 
@@ -29,6 +28,11 @@ export const day = () => {
 export const dateDay = () => {
   const date = digits()
   return date[2]
+}
+
+export const dateMonth = () => {
+  const date = digits()
+  return date[0] + "/" + date[1]
 }
 
 export const minutes = () => {

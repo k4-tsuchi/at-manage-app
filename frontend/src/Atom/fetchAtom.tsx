@@ -1,43 +1,49 @@
 import { atom } from 'jotai'
-import { CurrentReportId, getDataAtom, globalStateAtom} from './atoms'
-import { dateDay, day, minutes, time } from '../Funcs/Digits'
+import { CurrentReportId, globalStateAtom} from './atoms'
+import { dateDay, dateMonth, minutes } from '../Funcs/Digits'
 
 import { loadable } from "jotai/utils"
+import { Create, End, Rest } from '../@types/typeList';
 
-type Create = {
-  day: String;
-  start_at: String;
-}
-
-type Rest = {
-  time: String;
-}
-
-type End = {
-  end_at: String
+type getHistory = {
+  id: Number,
+  day: String,
+  start_at: String,
+  end_at: String,
+  rest_span: String,
+  active_span: String,
 }
 
 const url = 'https://localhost:8000/reports/';
 
-export async function getFetch() {
-  const res = await fetch(url)
-  const json = await res.json()
-  console.log(json)
+export async function getFetch(month: String) {
+  const res = await fetch(url + "?month=" + month)
+  const json: getHistory[] = await res.json()
+  return json
 }
+
+//月毎にデータを取得できるようにする
+// export const getFetchAtom = atom(
+//   () => {},
+//   (get, set, _) => {
+
+//   }
+// )
 
 const sendFetchAtom = atom(
   async (get) => {
     console.log(get(globalStateAtom))
     switch (get(globalStateAtom)) {
       case 'at_in':
+        console.log(dateMonth())
         return await sendReportFetch(
           {
+            month: dateMonth(),
             day: dateDay(),
             start_at: minutes()
           }, 
           "POST")
       case 'at_out':
-        console.log(CurrentReportId)
         return await sendReportFetch(
           {end_at: minutes()},
           "DELETE",
@@ -55,6 +61,8 @@ const sendFetchAtom = atom(
           "DELETE",
           get(CurrentReportId) + "/rest" 
         )
+      default:
+        return undefined
     }
   })
 

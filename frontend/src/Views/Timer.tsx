@@ -26,6 +26,7 @@ export default function Timer() {
     }
   }, [modal])
 
+
   return (
     <>
       {modalWindow}
@@ -34,7 +35,7 @@ export default function Timer() {
         <div className='flex flex-wrap justify-around w-full m-auto'>
           {
             at_items.map((value: string) => (
-              <AtBtn name={value} />
+              <AtBtn key={value} name={value} />
             ))
           }
         </div>

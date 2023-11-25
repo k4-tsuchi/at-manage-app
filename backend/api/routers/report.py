@@ -12,7 +12,9 @@ router = APIRouter()
 
 #勤退の一覧を表示する
 @router.get("/reports", response_model=List[report_schema.ReportResponse])
-async def list_report(db: AsyncSession = Depends(get_db)):
+async def list_report(month="", db: AsyncSession = Depends(get_db)):
+  if month:
+    return await report_controller.get_month(db, date_month=month)
   return await report_controller.get_all(db)
 
 #新しい日にちの記録を作成

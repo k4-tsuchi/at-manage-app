@@ -1,19 +1,18 @@
-import { useEffect } from "react"
-
-const url = 'http://0.0.0.0:8181'
-
-async function get_data() {
-  const a = await fetch(url)
-  const b = await a.json()
-  console.log(b)
-}
+import { useEffect, useState } from "react"
+import { dateMonth } from "../Funcs/Digits"
+import HistoryTable from "../components/HistoryTable"
+import SelectMonth from "../components/SelectMonth"
 
 export default function History() {
-  useEffect(() => {
-    get_data()
-  }, [])
+
+  const [ month, setMonth ] = useState<string>(dateMonth())
 
   return (
-    <div>hello</div>
+    <>
+      <div className="py-20 px-4 w-full">
+        <SelectMonth month={month}/>
+        <HistoryTable month={month}/>
+      </div>
+    </>
   )
 }

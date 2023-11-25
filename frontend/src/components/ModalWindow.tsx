@@ -1,10 +1,10 @@
 
 import { modalResultAtom } from "../Atom/atoms"
-import { useAtom } from "jotai"
+import { useSetAtom } from "jotai"
 
 const ModalWindow = (props: any) => {
 
-  const [ , setResult] = useAtom(modalResultAtom)
+  const setResult = useSetAtom(modalResultAtom)
 
   return (
     <>

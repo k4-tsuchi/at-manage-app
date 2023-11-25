@@ -20,3 +20,29 @@ export const modalResultAtom = atom<boolean | undefined>(undefined)
 export const getDataAtom = atom<boolean | undefined>(undefined)
 
 export const CurrentReportId = atom<String>("")
+
+export const modalSaveValueAtom = atom<String>("")
+
+
+// ボタン毎にレンダリングされてしまうため、１つのatomにまとめておく
+export const changeStateAtom = atom(
+  () => {}, 
+  (_get, set, key: string) => {
+    if (key === 'at_out') {
+      set(modalSaveValueAtom, key)
+      set(modalAtom, true)
+    } else {
+      set(globalStateAtom, key)
+    }
+  })
+
+// 柔軟にコードに埋め込みを行えるようにatomの関数で保管しておく
+export const actionModalResultAtom = atom(
+  () => {},
+  (get, set, result: Boolean) => {
+    if (get(modalSaveValueAtom) && result) {
+      set(globalStateAtom, 'at_out')
+    }
+    set(modalResultAtom, undefined)
+    set(modalAtom, false)
+  })
